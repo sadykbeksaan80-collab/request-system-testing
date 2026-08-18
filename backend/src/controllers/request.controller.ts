@@ -1,17 +1,27 @@
 import type { NextFunction, Request, Response } from "express";
-import { AppError } from "../errors/app-error.js";
-import { createRequestSchema } from "../schemas/request.schema.js";
+import { createRequestSchema, updateRequestStatusSchema } from "../schemas/request.schema.js";
 import { requestService } from "../services/request.service.js";
+import { parseRequestId } from "../utils/parse-request-id.js";
 
 class RequestController {
+  async updateStatus(request: Request, response: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = parseRequestId(request.params.id);
+      const { status } = updateRequestStatusSchema.parse(request.body);
+      const updatedRequest = await requestService.updateStatus(id, status);
+
+      response.status(200).json({
+        success: true,
+        data: updatedRequest
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async findById(request: Request, response: Response, next: NextFunction): Promise<void> {
     try {
-      const id = Number(request.params.id);
-
-      if (!Number.isSafeInteger(id) || id <= 0) {
-        throw new AppError("Некорректный идентификатор заявки", 400);
-      }
-
+      const id = parseRequestId(request.params.id);
       const foundRequest = await requestService.findById(id);
 
       response.status(200).json({

@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma.js";
+import type { RequestStatus } from "@prisma/client";
 import type { CreateRequestInput } from "../schemas/request.schema.js";
 
 class RequestRepository {
@@ -17,6 +18,13 @@ class RequestRepository {
   findById(id: number) {
     return prisma.request.findUnique({
       where: { id }
+    });
+  }
+
+  updateStatus(id: number, status: RequestStatus) {
+    return prisma.request.update({
+      where: { id },
+      data: { status }
     });
   }
 }

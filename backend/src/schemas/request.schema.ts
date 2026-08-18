@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { RequestStatus } from "@prisma/client";
 
 export const createRequestSchema = z.object({
   applicantName: z.string().trim().min(1, "Укажите имя заявителя"),
@@ -9,3 +10,9 @@ export const createRequestSchema = z.object({
 });
 
 export type CreateRequestInput = z.infer<typeof createRequestSchema>;
+
+export const updateRequestStatusSchema = z.object({
+  status: z.nativeEnum(RequestStatus)
+});
+
+export type UpdateRequestStatusInput = z.infer<typeof updateRequestStatusSchema>;

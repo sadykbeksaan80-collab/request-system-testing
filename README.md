@@ -251,15 +251,11 @@ pnpm exec prisma migrate dev --name create_request
 - `404 Not Found` — заявки с таким `id` нет; возвращается `{ "success": false, "message": "Заявка не найдена" }`.
 - `500 Internal Server Error` — внутренняя ошибка сервера.
 
-### Запланировано
-
 #### PATCH /api/requests/:id/status
 
-| Метод | URL | Назначение |
-| --- | --- | --- |
-| `PATCH` | `/api/requests/:id/status` | Изменить статус заявки |
+Изменяет статус одной заявки. Параметр пути `id` должен быть положительным целым числом.
 
-Предполагаемое тело запроса:
+Тело запроса:
 
 ```json
 {
@@ -267,7 +263,31 @@ pnpm exec prisma migrate dev --name create_request
 }
 ```
 
-Основные ответы: `200 OK` — статус изменён; `400 Bad Request` — неверный `id` или статус; `404 Not Found` — заявка не найдена; `500 Internal Server Error` — внутренняя ошибка.
+Допустимые значения `status`: `NEW`, `IN_PROGRESS`, `COMPLETED`, `REJECTED`.
+
+Успешный ответ (`200 OK`) возвращает обновлённую заявку:
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "applicantName": "Иван Иванов",
+    "email": "ivan@example.com",
+    "phone": "+77001234567",
+    "subject": "Проблема с услугой",
+    "description": "Описание проблемы",
+    "createdAt": "2026-08-18T00:00:00.000Z",
+    "status": "IN_PROGRESS"
+  }
+}
+```
+
+Основные ответы:
+
+- `400 Bad Request` — неверный `id`, отсутствует `status` или передан недопустимый статус.
+- `404 Not Found` — заявки с указанным `id` нет.
+- `500 Internal Server Error` — внутренняя ошибка.
 
 ## Frontend
 
