@@ -40,22 +40,22 @@ export function RequestsPage() {
   }, []);
 
   return (
-    <main className="requests-page">
-      <header className="requests-page__header">
-        <h1 className="requests-page__title">Заявки</h1>
-        <Link className="requests-page__create" to="/requests/new">
+    <main className="page">
+      <header className="page__header">
+        <h1 className="page__title">Заявки</h1>
+        <Link className="button" to="/requests/new">
           Создать заявку
         </Link>
       </header>
 
-      {isLoading ? <p className="requests-page__status">Загрузка заявок...</p> : null}
+      {isLoading ? <p className="status-text">Загрузка заявок...</p> : null}
 
       {!isLoading && hasError ? (
-        <p className="requests-page__status requests-page__status--error">Не удалось загрузить заявки.</p>
+        <p className="status-text status-text--error">Не удалось загрузить заявки.</p>
       ) : null}
 
       {!isLoading && !hasError && requests.length === 0 ? (
-        <p className="requests-page__status">Заявок пока нет.</p>
+        <p className="status-text">Заявок пока нет.</p>
       ) : null}
 
       {!isLoading && !hasError && requests.length > 0 ? (
@@ -67,7 +67,9 @@ export function RequestsPage() {
                 <span className="request-card__name">{request.applicantName}</span>
                 <span className="request-card__subject">{request.subject}</span>
                 <span className="request-card__meta">
-                  <span>{formatRequestStatus(request.status)}</span>
+                  <span className={`status-badge status-badge--${request.status.toLowerCase()}`}>
+                    {formatRequestStatus(request.status)}
+                  </span>
                   <time dateTime={request.createdAt}>{formatDate(request.createdAt)}</time>
                 </span>
               </Link>
