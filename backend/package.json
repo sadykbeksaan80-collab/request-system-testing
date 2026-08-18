@@ -1,0 +1,25 @@
+{
+  "name": "request-system-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "prisma:generate": "prisma generate --schema prisma/schema.prisma",
+    "prisma:validate": "prisma validate --schema prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.1",
+    "dotenv": "16.6.1",
+    "express": "5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "prisma": "6.19.1",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3"
+  }
+}
