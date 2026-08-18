@@ -4,6 +4,7 @@ import { requestController } from "../controllers/request.controller.js";
 const requestRouter = Router();
 
 requestRouter.get("/", requestController.findAll.bind(requestController));
+requestRouter.get("/:id", requestController.findById.bind(requestController));
 requestRouter.post("/", requestController.create.bind(requestController));
 
 export default requestRouter;

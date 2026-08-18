@@ -13,6 +13,12 @@ class RequestRepository {
       }
     });
   }
+
+  findById(id: number) {
+    return prisma.request.findUnique({
+      where: { id }
+    });
+  }
 }
 
 export const requestRepository = new RequestRepository();
