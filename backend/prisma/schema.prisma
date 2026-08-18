@@ -6,3 +6,21 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum RequestStatus {
+  NEW
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+
+model Request {
+  id            Int           @id @default(autoincrement())
+  applicantName String
+  email         String
+  phone         String
+  subject       String
+  description   String
+  createdAt     DateTime      @default(now())
+  status        RequestStatus @default(NEW)
+}
