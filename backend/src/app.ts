@@ -6,6 +6,11 @@ const app = express();
 
 app.use(express.json());
 
+app.use((_request, response, next) => {
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.get("/health", (_request, response) => {
   response.status(200).json({
     success: true,
