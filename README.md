@@ -4,7 +4,7 @@
 
 «Система заявок» — небольшое веб-приложение для приёма и обработки заявок. Пользователь сможет создавать заявку, а сотрудник — просматривать список, открывать карточку заявки и менять её статус.
 
-На текущем этапе подготовлены архитектура, базовый Express backend, PostgreSQL и Prisma-модель заявки. Прикладная логика заявок, API заявок и пользовательский интерфейс ещё не реализованы.
+На текущем этапе готовы backend API, PostgreSQL, Prisma и базовый React frontend с маршрутизацией. Интеграция frontend с API и полноценный интерфейс заявок ещё не реализованы.
 
 ## Цель проекта
 
@@ -74,12 +74,17 @@ PostgreSQL
 ```text
 request-system/
 ├── frontend/
-│   └── src/
-│       ├── components/      # Переиспользуемые элементы интерфейса
-│       ├── pages/           # Страницы приложения
-│       ├── router/          # Маршрутизация frontend
-│       ├── services/        # Клиент REST API
-│       └── types/           # TypeScript-типы frontend
+│   ├── src/
+│   │   ├── components/      # Переиспользуемые элементы интерфейса
+│   │   ├── pages/           # Страницы приложения
+│   │   ├── router/          # Маршрутизация frontend
+│   │   ├── services/        # Будущая работа с API
+│   │   ├── types/           # TypeScript-типы frontend
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.ts
 ├── backend/
 │   ├── prisma/
 │   │   └── schema.prisma     # Модель заявки и подключение Prisma
@@ -99,7 +104,7 @@ request-system/
 └── README.md
 ```
 
-Файлы frontend (`main.tsx`, `App.tsx`) появятся при реализации интерфейса. В backend уже созданы `app.ts` и `server.ts`: они запускают Express и предоставляют только технический endpoint `GET /health`.
+В backend созданы `app.ts` и `server.ts`: они запускают Express и предоставляют технический endpoint `GET /health`.
 
 ## Модель данных
 
@@ -291,7 +296,23 @@ pnpm exec prisma migrate dev --name create_request
 
 ## Frontend
 
-Будут предусмотрены следующие маршруты:
+Frontend создан на React, TypeScript и Vite. React Router настраивает маршрутизацию; на текущем этапе страницы содержат только минимальные placeholder-компоненты и не обращаются к API.
+
+### Frontend structure
+
+```text
+frontend/
+└── src/
+    ├── components/  # Переиспользуемые UI-компоненты
+    ├── pages/       # Страницы приложения
+    ├── services/    # Будущая работа с API
+    ├── types/       # TypeScript-типы
+    ├── router/      # Маршрутизация
+    ├── App.tsx
+    └── main.tsx
+```
+
+Настроены следующие маршруты:
 
 | Маршрут | Назначение |
 | --- | --- |
@@ -305,12 +326,15 @@ pnpm exec prisma migrate dev --name create_request
 2. Базовый backend, PostgreSQL и Prisma без моделей — выполнено.
 3. Модель Prisma, миграция и подключение PostgreSQL — выполнено.
 4. Реализация REST API, валидации и обработки ошибок.
-5. Реализация страниц frontend и интеграция с API.
-6. Проверка сценариев, доработка документации и подготовка к сдаче.
+5. Базовая инициализация frontend и маршрутизация — выполнено.
+6. Реализация страниц frontend и интеграция с API.
+7. Проверка сценариев, доработка документации и подготовка к сдаче.
 
 ## Запуск проекта
 
-Для локальной работы скопируйте `.env.example` в `.env`, а `backend/.env.example` — в `backend/.env`. Первый файл используется Docker Compose, второй — backend и Prisma. Затем запустите PostgreSQL командой `docker compose up -d`, перейдите в `backend`, выполните `pnpm install` и `pnpm dev`. Проверить backend можно запросом `GET /health`. Полные инструкции для frontend появятся вместе с интерфейсом.
+Для локальной работы скопируйте `.env.example` в `.env`, а `backend/.env.example` — в `backend/.env`. Первый файл используется Docker Compose, второй — backend и Prisma. Затем запустите PostgreSQL командой `docker compose up -d`, перейдите в `backend`, выполните `pnpm install` и `pnpm dev`.
+
+Для frontend скопируйте `frontend/.env.example` в `frontend/.env`, перейдите в папку `frontend`, выполните `pnpm install` и `pnpm dev`. Vite запустит frontend отдельно от backend. На текущем этапе `VITE_API_URL` только подготовлена и ещё не используется.
 
 ## Git workflow
 
