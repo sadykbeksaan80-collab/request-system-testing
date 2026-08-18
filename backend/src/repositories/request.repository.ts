@@ -5,6 +5,14 @@ class RequestRepository {
   create(data: CreateRequestInput) {
     return prisma.request.create({ data });
   }
+
+  findAll() {
+    return prisma.request.findMany({
+      orderBy: {
+        createdAt: "desc"
+      }
+    });
+  }
 }
 
 export const requestRepository = new RequestRepository();

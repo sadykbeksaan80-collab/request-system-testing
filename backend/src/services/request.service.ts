@@ -5,6 +5,10 @@ class RequestService {
   create(data: CreateRequestInput) {
     return requestRepository.create(data);
   }
+
+  findAll() {
+    return requestRepository.findAll();
+  }
 }
 
 export const requestService = new RequestService();
