@@ -147,11 +147,11 @@ pnpm exec prisma migrate dev --name create_request
 
 Базовый путь API: `/api`.
 
-### Создание заявки
+### Реализовано
 
-| Метод | URL | Назначение |
-| --- | --- | --- |
-| `POST` | `/api/requests` | Создать новую заявку |
+#### POST /api/requests
+
+Создаёт новую заявку. Поля `createdAt` и `status` клиент не задаёт: время создаётся автоматически, а статус всегда начинается со значения `NEW`.
 
 Предполагаемое тело запроса:
 
@@ -165,9 +165,41 @@ pnpm exec prisma migrate dev --name create_request
 }
 ```
 
-Основные ответы: `201 Created` — заявка создана; `400 Bad Request` — некорректные данные; `500 Internal Server Error` — внутренняя ошибка.
+Успешный ответ (`201 Created`):
 
-### Список заявок
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "applicantName": "Иван Иванов",
+    "email": "ivan@example.com",
+    "phone": "+7 700 000 00 00",
+    "subject": "Вопрос по заказу",
+    "description": "Нужна помощь с заказом.",
+    "createdAt": "2026-08-18T00:00:00.000Z",
+    "status": "NEW"
+  }
+}
+```
+
+При ошибке валидации сервер отвечает `400 Bad Request`:
+
+```json
+{
+  "success": false,
+  "message": "Ошибка валидации",
+  "errors": {
+    "email": ["Укажите корректный email"]
+  }
+}
+```
+
+Также возможен `500 Internal Server Error` при непредвиденной ошибке сервера.
+
+### Запланировано
+
+#### GET /api/requests
 
 | Метод | URL | Назначение |
 | --- | --- | --- |
@@ -175,7 +207,7 @@ pnpm exec prisma migrate dev --name create_request
 
 Основные ответы: `200 OK` — список получен; `500 Internal Server Error` — внутренняя ошибка.
 
-### Подробная информация о заявке
+#### GET /api/requests/:id
 
 | Метод | URL | Назначение |
 | --- | --- | --- |
@@ -190,7 +222,7 @@ pnpm exec prisma migrate dev --name create_request
 - `404 Not Found` — заявки с таким `id` нет.
 - `500 Internal Server Error` — внутренняя ошибка сервера.
 
-### Изменение статуса
+#### PATCH /api/requests/:id/status
 
 | Метод | URL | Назначение |
 | --- | --- | --- |

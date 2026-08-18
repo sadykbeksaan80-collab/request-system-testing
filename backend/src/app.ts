@@ -1,4 +1,6 @@
 import express from "express";
+import { errorHandler } from "./middleware/error.middleware.js";
+import requestRouter from "./routes/request.routes.js";
 
 const app = express();
 
@@ -10,5 +12,9 @@ app.get("/health", (_request, response) => {
     message: "Server is running"
   });
 });
+
+app.use("/api/requests", requestRouter);
+
+app.use(errorHandler);
 
 export default app;
